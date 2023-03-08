@@ -14,11 +14,14 @@ interface Props {
 export const MovieCard: FC<Props> = memo(
   ({ movie }) => {
     const {
-      id,
       title,
       poster_path,
       original_title,
+      release_date,
     } = movie;
+
+    console.log(release_date.split('-')[0]);
+
 
     const photoPath = poster_path
       ? `https://image.tmdb.org/t/p/w500/${poster_path}`
@@ -40,10 +43,13 @@ export const MovieCard: FC<Props> = memo(
             <Typography
               gutterBottom
               variant="h5"
-              component="div"
+              component="span"
             >
               {title}
             </Typography>
+            <div style={{display: 'inline-block', marginLeft: '10px'}}>
+              {release_date.split('-')[0]}
+            </div>
           </CardContent>
         </CardActionArea>
       </Card >
