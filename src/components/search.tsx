@@ -11,6 +11,7 @@ import { debounce } from 'lodash';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/router'
+import cn from 'classnames';
 
 export const Search: FC = memo(
   () => {
@@ -26,7 +27,9 @@ export const Search: FC = memo(
         return;
       }
 
-      const movies = await getMovies(query);
+      const movies = await (
+        await getMovies(query)
+      ).results;
 
       const movieTitles = movies.map(movie => movie.original_title)
 
@@ -84,46 +87,52 @@ export const Search: FC = memo(
     }, [search]);
 
     return (
-      <form
-        style={{
-          display: 'flex',
-          width: '100%'
-        }}
-        onSubmit={handleSubmit}
+      <div
+        className={cn({
+          search: true,
+          'search--with-movies': search,
+        })}
       >
-        <Autocomplete
-          disablePortal
-          value={value}
-          id="combo-box-demo"
-          getOptionLabel={(option) => (option ? `${option}` : '')}
-          options={options}
-          onChange={handleChoiceOfOption}
-          freeSolo
-          sx={{ width: '50%', margin: '20px auto', display: 'flex' }}
-          renderInput={(params) => (
-            <>
-              <TextField
-                onChange={(e) => setValue(e.currentTarget.value)}
-                onBlur={() => setOptions([])}
-                {...params}
-                label="Enter movie"
-                sx={{ backgroundColor: '#fff', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}
-                className='TextField-autocomplete'
-              />
+        <form
+          style={{
+            display: 'flex',
+            width: '100%'
+          }}
+          onSubmit={handleSubmit}
+        >
+          <Autocomplete
+            disablePortal
+            value={value}
+            id="combo-box-demo"
+            getOptionLabel={(option) => (option ? `${option}` : '')}
+            options={options}
+            onChange={handleChoiceOfOption}
+            freeSolo
+            sx={{ width: '50%', margin: '0px auto', display: 'flex' }}
+            renderInput={(params) => (
+              <>
+                <TextField
+                  onChange={(e) => setValue(e.currentTarget.value)}
+                  onBlur={() => setOptions([])}
+                  {...params}
+                  label="Enter movie"
+                  sx={{ backgroundColor: '#ffffff3e', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}
+                  className='TextField-autocomplete'
+                />
 
-              <LoadingButton
-                endIcon={<SearchIcon />}
-                loading={false}
-                loadingPosition="end"
-                variant="contained"
-                type="submit"
-                sx={{ margin: '0 20px' }}
-              />
-            </>
-          )}
-        />
-      </form>
-
+                <LoadingButton
+                  endIcon={<SearchIcon />}
+                  loading={false}
+                  loadingPosition="end"
+                  variant="contained"
+                  type="submit"
+                  sx={{ margin: '0 20px' }}
+                />
+              </>
+            )}
+          />
+        </form>
+      </div>
     );
   },
 );

@@ -4,4 +4,13 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  transition-property: box-shadow, background-color;
+  transition-duration: .3s;
+  transition-timing-function: ease;
+
+
+  &--with-movies {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #7d7575;
+  }
 }

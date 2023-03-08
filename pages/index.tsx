@@ -2,11 +2,16 @@ import { Search } from '../src/components/search'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import cn from 'classnames';
+import { MovieList } from '@/src/components/movieList';
 
 
 export default function Home() {
   const router = useRouter();
-  const { search } = router.query
+  const { search } = router.query;
+
+  const normalizedSearch = typeof search === 'string'
+    ? search
+    : search?.join();
 
   return (
     <>
@@ -23,9 +28,9 @@ export default function Home() {
             'container--with-movies': search,
           })}
         >
-          <div className='search'>
-            <Search />
-          </div>
+          <Search />
+
+          {normalizedSearch && <MovieList searchQuery={normalizedSearch} />}
         </div>
       </main>
     </>

@@ -14,16 +14,22 @@ export function getData<T>(url: string): Promise<T> {
     .catch(error => alert(error.message));
 }
 
-export function getMovies(query: string) {
-  const preparedQuery = query
+function normaliseQuery (query: string) {
+  return query
     .split(' ')
     .filter(Boolean)
     .join(' ')
     .replaceAll(' ', '%20')
     .trim();
+}
 
-  return getData<MovieResponse>(URL_FOR_SEARCH + preparedQuery)
-    .then(data => (
-      data.results
-    ))
+export async function getMovies(query: string, page: number = 1) {
+  const normalisedQuery =  normaliseQuery(query);
+
+    const data = await getData<MovieResponse>(URL_FOR_SEARCH + normalisedQuery + `&page=${page}`)
+
+    console.log(data);
+    const {results, total_pages} = data;
+
+    return {results, total_pages}
 }
