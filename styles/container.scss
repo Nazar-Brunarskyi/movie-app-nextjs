@@ -1,0 +1,11 @@
+.container {
+  min-height: 100vh;
+  border: 1px solid #000;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  transition: grid-template-rows 0.3s ease;
+
+  &--with-movies {
+    grid-template-rows: 0.2fr 1fr;
+  }
+}
