@@ -27,9 +27,9 @@ export const Search: FC = memo(
         return;
       }
 
-      const movies = await (
-        await getMovies(query)
-      ).results;
+      const data = await getMovies(query)
+
+      const movies = data ? data.results : [];
 
       const movieTitles = movies.map(movie => movie.original_title)
 
@@ -65,6 +65,13 @@ export const Search: FC = memo(
     const handleChoiceOfOption = (event: any, newValue: string | null) => {
       if (newValue) {
         setValue(newValue);
+
+        router.push({
+          query: {
+            search: newValue,
+          }
+        });
+
       }
     };
 
@@ -116,7 +123,7 @@ export const Search: FC = memo(
                   onBlur={() => setOptions([])}
                   {...params}
                   label="Enter movie"
-                  sx={{ backgroundColor: '#ffffff3e', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}
+                  sx={{ backgroundColor: '#fff', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}
                   className='TextField-autocomplete'
                 />
 

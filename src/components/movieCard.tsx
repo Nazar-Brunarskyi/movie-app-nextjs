@@ -20,20 +20,17 @@ export const MovieCard: FC<Props> = memo(
       release_date,
     } = movie;
 
-    console.log(release_date.split('-')[0]);
-
-
     const photoPath = poster_path
       ? `https://image.tmdb.org/t/p/w500/${poster_path}`
       : 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg';
 
     return (
       <Card
-        sx={{ maxWidth: '100%', height: 550, textDecoration: 'none' }}
+        sx={{ maxWidth: '100%', height: 400, textDecoration: 'none' }}
       >
-        <CardActionArea sx={{ height: 550 }}>
+        <CardActionArea sx={{ height: 300 }}>
           <CardMedia
-            sx={{ height: '85%' }}
+            sx={{ height: '95%' }}
             component="img"
             height="350"
             image={photoPath}
@@ -42,14 +39,14 @@ export const MovieCard: FC<Props> = memo(
           <CardContent>
             <Typography
               gutterBottom
-              variant="h5"
-              component="span"
+              variant="h6"
+              component="div"
+              sx={{
+                minHeight: '95px'
+              }}
             >
-              {title}
+              {`${title}, (${release_date.split('-')[0]})`}
             </Typography>
-            <div style={{display: 'inline-block', marginLeft: '10px'}}>
-              {release_date.split('-')[0]}
-            </div>
           </CardContent>
         </CardActionArea>
       </Card >

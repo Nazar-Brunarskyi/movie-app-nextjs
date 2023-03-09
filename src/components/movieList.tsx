@@ -3,6 +3,8 @@ import { Movie } from '@/types/Movie';
 import { ChangeEvent, FC, memo, useEffect, useRef, useState } from 'react';
 import { MovieCard } from './movieCard';
 import Pagination from '@mui/material/Pagination';
+import { Loader } from './loader';
+import Alert from '@mui/material/Alert';
 
 interface Props {
   searchQuery: string
@@ -11,17 +13,26 @@ interface Props {
 export const MovieList: FC<Props> = memo(
   ({ searchQuery }) => {
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const [totalPages, setTotalPages] = useState(1);
     const [page, setPage] = useState(1);
     const MovieListRef = useRef<HTMLDivElement>(null);
 
     const loadMovies = async () => {
+      setIsLoading(true);
+
       const data = await getMovies(searchQuery, page);
 
-      console.log(data)
+      if (!data) {
+        setError('problem with loading, try later');
+        setMovies([]);
+      } else {
+        setTotalPages(data.total_pages);
+        setMovies(data.results);
+      }
 
-      setTotalPages(data.total_pages);
-      setMovies(data.results);
+      setIsLoading(false);
     }
 
     const handlePageChange = (event: ChangeEvent<unknown>, newPage: number) => {
@@ -30,7 +41,7 @@ export const MovieList: FC<Props> = memo(
         MovieListRef.current.scrollTo({
           top: 0,
           behavior: "smooth"
-      });;
+        });;
       }
     };
 
@@ -40,23 +51,36 @@ export const MovieList: FC<Props> = memo(
 
     return (
       <div className='movie-list' ref={MovieListRef}>
-        <div className='movie-list__grid'>
-          {
-            movies.map(movie => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))
-          }
-        </div>
+        {isLoading && <Loader />}
 
-        <div className="movie-list__pagination">
-          <Pagination
-            count={totalPages}
-            onChange={handlePageChange}
-            sx={{
-              margin: '50px'
-            }}
-          />
-        </div>
+        {
+          !isLoading && error
+          && <Alert severity="error">This is an error alert — check it out!</Alert>
+        }
+
+        {
+          !isLoading && !error && movies.length > 0
+          && <>
+            <div className='movie-list__grid'>
+              {
+                movies.map(movie => (
+                  <MovieCard key={movie.id} movie={movie} />
+                ))
+              }
+            </div>
+
+            <div className="movie-list__pagination">
+              <Pagination
+                page={page}
+                count={totalPages}
+                onChange={handlePageChange}
+                sx={{
+                  margin: '50px'
+                }}
+              />
+            </div>
+          </>
+        }
       </div>
     );
   },
