@@ -30,7 +30,10 @@ export const MovieCard: FC<Props> = memo(
 
     return (
       <Card
-        sx={{ maxWidth: '100%', height: 400, textDecoration: 'none' }}
+        sx={{
+          maxWidth: '100%',
+          height: 400
+        }}
       >
         <CardActionArea sx={{ height: 300 }}>
           <CardMedia
@@ -46,7 +49,8 @@ export const MovieCard: FC<Props> = memo(
               variant="h6"
               component="div"
               sx={{
-                minHeight: '95px'
+                minHeight: '95px',
+                textDecoration: 'none'
               }}
             >
               {`${title}, (${release_date.split('-')[0]})`}

@@ -14,10 +14,10 @@ export const TrailerVideo: FC<Props> = memo(
           variant="h5"
           component="div"
           sx={{
-            textAlign: 'center'
+            marginLeft: '16px'
           }}
         >
-          Trailer
+          Trailer:
         </Typography>
         <iframe
           className='trailer'

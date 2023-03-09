@@ -6,6 +6,7 @@ import Pagination from '@mui/material/Pagination';
 import { Loader } from './loader';
 import Alert from '@mui/material/Alert';
 import { CustomAlert } from './alert';
+import Link from 'next/link';
 
 interface Props {
   searchQuery: string
@@ -65,7 +66,9 @@ export const MovieList: FC<Props> = memo(
             <div className='movie-list__grid'>
               {
                 movies.map(movie => (
-                  <MovieCard key={movie.id} movie={movie} />
+                  <Link key={movie.id} href={ `/movies/${movie.id}`}>
+                    <MovieCard movie={movie} />
+                  </Link>
                 ))
               }
             </div>

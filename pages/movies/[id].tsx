@@ -14,6 +14,7 @@ import { normalizeMovieInfoForTable } from '@/src/utils/normalizeMovieInfoForTab
 import { getTrailersArr } from '@/src/API/getData';
 import { Trailer } from '@/src/types/trailerObject';
 import { TrailerVideo } from '@/src/components/trailerVideo';
+import Head from 'next/head';
 
 interface Props {
   movie: MovieInfo,
@@ -48,49 +49,64 @@ const MoviePage: FC<Props> = ({ movie, trailer }) => {
     : 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg';
 
   return (
-    <div className='movie-page'>
-      <Card sx={{
-        maxWidth: isSmallScreen ? '100%' : '80%',
-        margin: 'auto',
-      }
-      }>
-        <Typography
-          gutterBottom
-          variant="h4"
-          component="div"
-          sx={{
-            textAlign: 'center',
-            margin: '20px'
-          }}
-        >
-          {title}
-        </Typography>
-        <div className='movie-page__info'>
-          <CardMedia
-            image={photoPath}
-            title="green iguana"
-            sx={{
-              height: '300px',
-              width: '250px',
-              m: '10px'
-            }}
-          />
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={overview} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <div className='movie-page'>
+          <Card sx={{
+            maxWidth: isSmallScreen ? '100%' : '80%',
+            margin: 'auto',
+          }
+          }>
+            <Typography
+              gutterBottom
+              variant="h4"
+              component="div"
+              sx={{
+                textAlign: 'center',
+                margin: '20px'
+              }}
+            >
+              {title}
+            </Typography>
+            <div className='movie-page__info'>
+              <CardMedia
+                image={photoPath}
+                title="green iguana"
+                sx={{
+                  height: '300px',
+                  width: '250px',
+                  m: '10px'
+                }}
+              />
 
-          <CustomTable tableRows={tableRows} />
+              <CustomTable tableRows={tableRows} />
+            </div>
+
+            <CardContent>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+              >
+                Description:
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {overview}
+              </Typography>
+            </CardContent>
+
+            <TrailerVideo trailerKey={trailerKey} />
+          </Card>
         </div>
+      </main>
+    </>
 
-        <CardContent>
-          {/* <Typography gutterBottom variant="h4" component="div">
-            {title}
-          </Typography> */}
-          <Typography variant="body2" color="text.secondary">
-            {overview}
-          </Typography>
-        </CardContent>
-
-        <TrailerVideo trailerKey={trailerKey} />
-      </Card>
-    </div>
   );
 }
 
@@ -108,7 +124,7 @@ export const getServerSideProps = async (context: Contect) => {
   ]);
 
   movie = await movie.json();
-  const trailer = trailers[0];
+  const trailer = trailers[0] || null;
 
   return {
     props: {
