@@ -5,18 +5,20 @@ import {
   useEffect,
   memo,
 } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Typography } from '@mui/material';
 import { getMovies } from '../../API/getData';
 import { debounce } from 'lodash';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/router'
 import cn from 'classnames';
+import { useMediaQuery } from '@mui/material';
 
 export const Search: FC = memo(
   () => {
     const router = useRouter();
 
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
     const { search } = router.query
     const [value, setValue] = useState('');
     const [options, setOptions] = useState<string[]>([]);
@@ -115,7 +117,12 @@ export const Search: FC = memo(
             options={options}
             onChange={handleChoiceOfOption}
             freeSolo
-            sx={{ width: '50%', margin: '0px auto', display: 'flex' }}
+            sx={{
+              width: isSmallScreen ? '80%' : '50%',
+              margin: '0px auto',
+              display: 'flex',
+              transform: search ? null : 'translateY(-200%)',
+            }}
             renderInput={(params) => (
               <>
                 <TextField
@@ -123,8 +130,12 @@ export const Search: FC = memo(
                   onBlur={() => setOptions([])}
                   {...params}
                   label="Enter movie"
-                  sx={{ backgroundColor: '#fff', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}
                   className='TextField-autocomplete'
+                  sx={{
+                    backgroundColor: '#fff',
+                    oxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)',
+                    borderRadius: '4px'
+                  }}
                 />
 
                 <LoadingButton

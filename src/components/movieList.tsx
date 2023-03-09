@@ -5,6 +5,7 @@ import { MovieCard } from './movieCard';
 import Pagination from '@mui/material/Pagination';
 import { Loader } from './loader';
 import Alert from '@mui/material/Alert';
+import { CustomAlert } from './alert';
 
 interface Props {
   searchQuery: string
@@ -55,7 +56,7 @@ export const MovieList: FC<Props> = memo(
 
         {
           !isLoading && error
-          && <Alert severity="error">This is an error alert — check it out!</Alert>
+          && <CustomAlert text={error} type='error' />
         }
 
         {
@@ -80,6 +81,14 @@ export const MovieList: FC<Props> = memo(
               />
             </div>
           </>
+        }
+
+        {
+          !isLoading && !error && movies.length === 0
+          && <CustomAlert
+            text="there isn't such movie or you made mistake while typing"
+            type='warning'
+          />
         }
       </div>
     );
