@@ -9,3 +9,7 @@ export const IMG_BASE_PATH = 'https://image.tmdb.org/t/p/w500/';
 export const GET_MOVIE_INFO_URL = (id: number) => (
   `${BASE_URL}/movie/${id}${API_KEY}&language=en-US`
 );
+
+export const GET_MOVIE_TRAILERS_URL = (movieId: number) => (
+  `${BASE_URL}/movie/${movieId}/videos${API_KEY}&language=en-US`
+)

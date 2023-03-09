@@ -1,7 +1,7 @@
 import { MovieResponse } from "../types/responseType";
 import { Trailer, TrailerResponse } from "../types/trailerObject";
 import { normaliseQuery } from "../utils/normaliseQuery";
-import { URL_FOR_SEARCH } from "./API_VARIABLES";
+import { GET_MOVIE_TRAILERS_URL, URL_FOR_SEARCH } from "./API_VARIABLES";
 
 export async function getData<T>(url: string): Promise<T> {
   try {
@@ -17,8 +17,6 @@ export async function getData<T>(url: string): Promise<T> {
   }
 }
 
-
-
 export async function getMovies(query: string, page: number = 1) {
   try {
     const normalisedQuery = normaliseQuery(query);
@@ -31,4 +29,13 @@ export async function getMovies(query: string, page: number = 1) {
   } catch (err) {
     return false;
   }
+}
+
+export async function getTrailersArr(movieId: number) {
+  const url = GET_MOVIE_TRAILERS_URL(movieId);
+
+  const data = await getData<TrailerResponse>(url);
+  const videos = data.results;
+  
+  return videos.filter(video => video.type === 'Trailer')
 }
