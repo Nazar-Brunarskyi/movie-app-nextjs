@@ -1,5 +1,5 @@
-import { getMovies } from '@/API/getData';
-import { Movie } from '@/types/Movie';
+import { getMovies } from '@/src/API/getData';
+import { Movie } from '@/src/types/Movie';
 import { ChangeEvent, FC, memo, useEffect, useRef, useState } from 'react';
 import { MovieCard } from './movieCard';
 import Pagination from '@mui/material/Pagination';

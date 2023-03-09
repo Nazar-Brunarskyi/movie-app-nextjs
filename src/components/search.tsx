@@ -6,7 +6,7 @@ import {
   memo,
 } from 'react';
 import { Autocomplete, TextField, Typography } from '@mui/material';
-import { getMovies } from '../../API/getData';
+import { getMovies } from '../API/getData';
 import { debounce } from 'lodash';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SearchIcon from '@mui/icons-material/Search';

@@ -5,7 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import { Movie } from '../../types/Movie';
+import { Movie } from '../types/Movie';
+import { GET_MOVIE_INFO_URL } from '../API/API_VARIABLES';
 
 interface Props {
   movie: Movie,
@@ -19,6 +20,9 @@ export const MovieCard: FC<Props> = memo(
       original_title,
       release_date,
     } = movie;
+
+    console.log(movie);
+    console.log(GET_MOVIE_INFO_URL(movie.id));
 
     const photoPath = poster_path
       ? `https://image.tmdb.org/t/p/w500/${poster_path}`
