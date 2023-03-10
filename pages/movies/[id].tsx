@@ -1,13 +1,10 @@
 import { FC } from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useMediaQuery } from '@mui/material';
 import { CustomTable } from '@/src/components/CustomTable';
-import { useRouter } from 'next/router';
 import { MovieInfo } from '@/src/types/movieInfo';
 import { GET_MOVIE_INFO_URL } from '@/src/API/API_VARIABLES';
 import { normalizeMovieInfoForTable } from '@/src/utils/normalizeMovieInfoForTable';
@@ -33,9 +30,6 @@ const MoviePage: FC<Props> = ({ movie, trailer }) => {
     overview,
     poster_path
   } = movie
-
-  // console.log(movie);
-  // console.log({trailer});
 
   const tableRows = normalizeMovieInfoForTable(movie);
   const trailerKey = trailer

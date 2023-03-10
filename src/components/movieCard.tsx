@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useEffect, memo } from 'react';
+import { FC, memo } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,9 +19,6 @@ export const MovieCard: FC<Props> = memo(
       original_title,
       release_date,
     } = movie;
-
-    console.log(movie);
-    console.log(GET_MOVIE_INFO_URL(movie.id));
 
     const photoPath = poster_path
       ? `https://image.tmdb.org/t/p/w500/${poster_path}`

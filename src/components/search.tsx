@@ -119,7 +119,7 @@ export const Search: FC = memo(
             freeSolo
             sx={{
               width: isSmallScreen ? '80%' : '50%',
-              margin: '0px auto',
+              margin: '5px auto',
               display: 'flex',
               transform: search ? null : 'translateY(-200%)',
             }}
