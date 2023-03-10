@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "predeploy": "npm run build",
-    "deploy": "npm run build && gh-pages -d out"
+    "deploy": "npm run build && gh-pages -d out",
+    "preinstall": "npm config set legacy-peer-deps true"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
