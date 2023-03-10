@@ -14,92 +14,92 @@ import { TrailerVideo } from '@/src/components/trailerVideo';
 import Head from 'next/head';
 
 interface Props {
-  movie: MovieInfo,
+  movie?: MovieInfo,
   trailer?: Trailer,
-}
-
-interface Context {
-  query: { id: string }
 }
 
 const MoviePage: FC<Props> = ({ movie, trailer }) => {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
-
-  const {
-    title,
-    overview,
-    poster_path
-  } = movie
 
   const tableRows = normalizeMovieInfoForTable(movie);
   const trailerKey = trailer
     ? trailer.key
     : '_XRnENg_QI0';
 
-  const photoPath = poster_path
-    ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+  const photoPath = movie?.poster_path
+    ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
     : 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg';
 
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta name="description" content={overview} />
+        <title>{movie?.title || 'not Found'}</title>
+        <meta name="description" content={movie?.overview || 'not Found'} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="movies.ico" />
       </Head>
       <main>
-        <div className='movie-page'>
-          <Card sx={{
-            maxWidth: isSmallScreen ? '100%' : '80%',
-            margin: 'auto',
-          }
-          }>
-            <Typography
-              gutterBottom
-              variant="h4"
-              component="div"
-              sx={{
-                textAlign: 'center',
-                margin: '20px'
-              }}
-            >
-              {title}
-            </Typography>
-            <div className='movie-page__info'>
-              <CardMedia
-                image={photoPath}
-                title="green iguana"
-                sx={{
-                  height: '300px',
-                  width: '250px',
-                  m: '10px'
-                }}
-              />
+        {
+          movie
+            ? (
+              <div className='movie-page'>
+                <Card sx={{
+                  maxWidth: isSmallScreen ? '100%' : '80%',
+                  margin: 'auto',
+                }
+                }>
+                  <Typography
+                    gutterBottom
+                    variant="h4"
+                    component="div"
+                    sx={{
+                      textAlign: 'center',
+                      margin: '20px'
+                    }}
+                  >
+                    {movie.title}
+                  </Typography>
+                  <div className='movie-page__info'>
+                    <CardMedia
+                      image={photoPath}
+                      title="green iguana"
+                      sx={{
+                        height: '300px',
+                        width: '250px',
+                        m: '10px'
+                      }}
+                    />
 
-              <CustomTable tableRows={tableRows} />
-            </div>
+                    <CustomTable tableRows={tableRows} />
+                  </div>
 
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-              >
-                Description:
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {overview}
-              </Typography>
-            </CardContent>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                    >
+                      Description:
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {movie.overview}
+                    </Typography>
+                  </CardContent>
 
-            <TrailerVideo trailerKey={trailerKey} />
-          </Card>
-        </div>
+                  <TrailerVideo trailerKey={trailerKey} />
+                </Card>
+              </div>
+            )
+            : <h1 className='not-found'>movie is not found</h1>
+        }
       </main>
     </>
 
   );
+}
+
+interface Context {
+  query: { id: string }
 }
 
 export const getServerSideProps = async (context: Context) => {
@@ -109,19 +109,27 @@ export const getServerSideProps = async (context: Context) => {
     ? +id
     : id ? +id[0] : 0;
 
+  try {
+    let [movie, trailers] = await Promise.all([
+      fetch(GET_MOVIE_INFO_URL(normalisedId)),
+      getTrailersArr(normalisedId),
+    ]);
 
-  let [movie, trailers] = await Promise.all([
-    fetch(GET_MOVIE_INFO_URL(normalisedId)),
-    getTrailersArr(normalisedId),
-  ]);
+    movie = await movie.json();
+    const trailer = trailers[0] || null;
 
-  movie = await movie.json();
-  const trailer = trailers[0] || null;
-
-  return {
-    props: {
-      movie,
-      trailer,
+    return {
+      props: {
+        movie,
+        trailer,
+      }
+    }
+  } catch (err) {
+    return {
+      props: {
+        movie: null,
+        trailer: null,
+      }
     }
   }
 }

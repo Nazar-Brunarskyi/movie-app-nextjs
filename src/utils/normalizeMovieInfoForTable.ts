@@ -12,8 +12,14 @@ const normalizeGenres = (genres: string) => (
     .join(',')
 )
 
-export const normalizeMovieInfoForTable = (movie: MovieInfo) => {
+export const normalizeMovieInfoForTable = (movie?: MovieInfo) => {
   const normalizedInfo: NormalizedInfo = {};
+
+  if (!movie) {
+    normalizedInfo.info = 'Not Found';
+
+    return Object.entries(normalizedInfo);
+  }
 
   normalizedInfo.budget = movie.budget || 'unknown';
   normalizedInfo['release date'] = movie.release_date;

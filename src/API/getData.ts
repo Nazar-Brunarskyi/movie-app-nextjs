@@ -7,12 +7,12 @@ export async function getData<T>(url: string): Promise<T> {
   try {
     const response = await fetch(url);
 
-    if (!response.ok) {
+    if (!response.ok) {      
       throw new Error('something went wrong, try later!')
     }
 
     return response.json();
-  } catch (err) {
+  } catch (err) {    
     throw new Error('something went wrong, try later!')
   }
 }
