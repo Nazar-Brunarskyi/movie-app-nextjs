@@ -8,17 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "predeploy": "npm run build",
-    "deploy": "npm run build && gh-pages -d out",
-    "preinstall": "npm config set legacy-peer-deps true"
+    "deploy": "npm run build && gh-pages -d out"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
-    "@material-ui/icons": "^4.11.3",
-    "@material-ui/utils": "^4.11.3",
     "@mui/icons-material": "^5.11.11",
-    "@mui/lab": "^5.0.0-alpha.122",
     "@mui/material": "^5.11.12",
     "@mui/styled-engine-sc": "^5.11.11",
     "@types/node": "18.14.6",
@@ -26,7 +22,6 @@
     "@types/react-dom": "18.0.11",
     "classnames": "^2.3.2",
     "next": "^13.1.1",
-    "node-sass": "^8.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sass": "^1.58.3",
