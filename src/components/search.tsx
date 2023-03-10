@@ -8,7 +8,6 @@ import {
 import { Autocomplete, TextField, Typography } from '@mui/material';
 import { getMovies } from '../API/getData';
 import { debounce } from 'lodash';
-// import LoadingButton from '@mui/lab/LoadingButton';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/router'
@@ -140,9 +139,6 @@ export const Search: FC = memo(
                 />
 
                 <Button
-                  // endIcon={<SearchIcon />}
-                  // loading={false}
-                  // loadingPosition="end"
                   variant="contained"
                   type="submit"
                   sx={{ margin: '0 20px' }}
