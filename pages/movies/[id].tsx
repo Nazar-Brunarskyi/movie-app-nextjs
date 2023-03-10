@@ -18,7 +18,7 @@ interface Props {
   trailer?: Trailer,
 }
 
-interface Contect {
+interface Context {
   query: { id: string }
 }
 
@@ -35,8 +35,6 @@ const MoviePage: FC<Props> = ({ movie, trailer }) => {
   const trailerKey = trailer
     ? trailer.key
     : '_XRnENg_QI0';
-
-  console.log(trailerKey);
 
   const photoPath = poster_path
     ? `https://image.tmdb.org/t/p/w500/${poster_path}`
@@ -104,7 +102,7 @@ const MoviePage: FC<Props> = ({ movie, trailer }) => {
   );
 }
 
-export const getServerSideProps = async (context: Contect) => {
+export const getServerSideProps = async (context: Context) => {
   const { id } = context.query;
 
   const normalisedId = typeof id === 'string'

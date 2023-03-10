@@ -1,17 +1,71 @@
+import { FC, useState, useEffect } from 'react'
 import { Search } from '../src/components/search'
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { MovieList } from '@/src/components/movieList';
+import { getMovies } from '@/src/API/getData';
+import { Movie } from '@/src/types/Movie';
+import { useRouter } from 'next/router';
+import { normalizeString } from '@/src/utils/normalizeString';
+import { normalizeNumber } from '@/src/utils/normalizeNumber';
 
+interface Props {
+  moviesRenderedOnServer?: Movie[],
+  totalPagesRenderedOnServer?: number
+}
 
-export default function Home() {
+const Home: FC<Props> = ({
+  moviesRenderedOnServer,
+  totalPagesRenderedOnServer,
+}) => {
   const router = useRouter();
-  const { search } = router.query;
+  const { search, page } = router.query;
 
-  const normalizedSearch = typeof search === 'string'
-    ? search
-    : search?.join();
+  const [movies, setMovies] = useState<Movie[]>(moviesRenderedOnServer || []);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [totalPages, setTotalPages] = useState(totalPagesRenderedOnServer || 1);
+  const [isFirstRender, setisFirstRender] = useState(true);
+
+  const normalizedPage = normalizeNumber(page) || 1;
+  const normalizedSearch = normalizeString(search)
+
+
+  const loadMovies = async () => {
+    if (!normalizedSearch) {
+      return
+    }
+
+    setIsLoading(true);
+
+    const data = await getMovies(normalizedSearch, normalizedPage);
+
+    router.push({
+      query: {
+        search: normalizedSearch,
+        page: normalizedPage
+      }
+    });
+
+    if (!data) {
+      setError('problem with loading, try later');
+      setMovies([]);
+    } else {
+      setTotalPages(data.total_pages);
+      setMovies(data.results);
+    }
+
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    if(!isFirstRender) {
+      loadMovies();
+    }
+
+    setisFirstRender(false);
+  }, [normalizedPage, normalizedSearch])
+
 
   return (
     <>
@@ -30,9 +84,57 @@ export default function Home() {
         >
           <Search />
 
-          {normalizedSearch && <MovieList searchQuery={normalizedSearch} />}
+          {normalizedSearch && (
+            <MovieList
+              movies={movies}
+              searchQuery={normalizedSearch}
+              error={error}
+              isLoading={isLoading}
+              page={normalizedPage}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       </main>
     </>
   )
 }
+
+interface Context {
+  query: {
+    search?: string,
+    page?: string,
+  },
+}
+
+export const getServerSideProps = async (context: Context) => {
+  const { page, search } = context.query;
+
+  const defaultProps = {
+    props: {
+      moviesRenderedOnServer: [],
+      totalPagesRenderedOnServer: 1,
+    },
+  };
+
+  if (!search) {
+    return defaultProps;
+  }
+
+  const normalizedPage = page ? +page : 1;
+
+  const data = await getMovies(search, normalizedPage);
+
+  if (!data) {
+    return defaultProps;
+  }
+
+  return {
+    props: {
+      moviesRenderedOnServer: data.results,
+      totalPagesRenderedOnServer: data.total_pages,
+    }
+  }
+}
+
+export default Home;

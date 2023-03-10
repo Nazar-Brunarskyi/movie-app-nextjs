@@ -7,38 +7,39 @@ import { Loader } from './loader';
 import Alert from '@mui/material/Alert';
 import { CustomAlert } from './alert';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   searchQuery: string
+  movies: Movie[]
+  isLoading: boolean
+  error: string
+  totalPages: number
+  page: number
 }
 
 export const MovieList: FC<Props> = memo(
-  ({ searchQuery }) => {
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [totalPages, setTotalPages] = useState(1);
-    const [page, setPage] = useState(1);
+  ({
+    searchQuery,
+    error,
+    isLoading,
+    movies,
+    page,
+    totalPages
+  }) => {
+    const router = useRouter();
     const MovieListRef = useRef<HTMLDivElement>(null);
 
-    const loadMovies = async () => {
-      setIsLoading(true);
-
-      const data = await getMovies(searchQuery, page);
-
-      if (!data) {
-        setError('problem with loading, try later');
-        setMovies([]);
-      } else {
-        setTotalPages(data.total_pages);
-        setMovies(data.results);
+    const handlePageChange = (event: ChangeEvent<unknown>, newPage: number) => {
+      if (searchQuery) {
+        router.push({
+          query: {
+            search: searchQuery,
+            page: newPage
+          }
+        });
       }
 
-      setIsLoading(false);
-    }
-
-    const handlePageChange = (event: ChangeEvent<unknown>, newPage: number) => {
-      setPage(newPage);
       if (MovieListRef.current) {
         MovieListRef.current.scrollTo({
           top: 0,
@@ -46,10 +47,6 @@ export const MovieList: FC<Props> = memo(
         });;
       }
     };
-
-    useEffect(() => {
-      loadMovies();
-    }, [searchQuery, page])
 
     return (
       <div className='movie-list' ref={MovieListRef}>
@@ -66,7 +63,7 @@ export const MovieList: FC<Props> = memo(
             <div className='movie-list__grid'>
               {
                 movies.map(movie => (
-                  <Link key={movie.id} href={ `/movies/${movie.id}`}>
+                  <Link key={movie.id} href={`/movies/${movie.id}`}>
                     <MovieCard movie={movie} />
                   </Link>
                 ))
