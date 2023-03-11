@@ -23,8 +23,10 @@ https://user-images.githubusercontent.com/115641582/224493839-69579442-ad3e-49fa
    * lodash
 
 # To run it
-clone it with `git clone https://github.com/Nazar-Brunarskyi/movie-app-nextjs.git`
+  * fork the repository
 
-instal appropriate packages `npm i`
+  * clone it with `git clone https://github.com/Nazar-Brunarskyi/movie-app-nextjs.git`
 
-use `npm run dev` to run it
+  * instal appropriate packages `npm i`
+
+  * use `npm run dev` to run it
