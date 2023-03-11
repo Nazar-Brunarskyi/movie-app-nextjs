@@ -5,7 +5,7 @@
 This app is made in order to help you find the basic information about the movie🎞️ you would like to watch👀. It will provide you with short information about a movie and its trailer.
 
 # additional information
-To develop the app I decided to use a different API from the test task(TMDB API) because I believe it can provide me with more detailed information about the movie, and also the database of it is more extensive than the OMDB'S database. As an additional feature, I made a search bar with autocomplete, so users can see the variants of movies names!
+To develop the app I decided to use a different API from the test task(TMDB API) because I believe it can provide me with more detailed information about the movie, and also the database of it is more extensive than the OMDB'S database. As an additional feature, I made a search bar with autocomplete, so users can see the variants of movie names! Also because of some problems with support SCSS, I rolled back to Next v13.1.1!
 
 # preview
 
