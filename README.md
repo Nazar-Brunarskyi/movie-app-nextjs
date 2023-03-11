@@ -1,4 +1,4 @@
-# Pokemon GO Demo link ⬇
+# Movie app Next.js Demo link ⬇
 [DEMOLINK](https://soft-souffle-f7e57d.netlify.app/)
 
 # about the app
