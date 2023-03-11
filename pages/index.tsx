@@ -40,13 +40,6 @@ const Home: FC<Props> = ({
 
     const data = await getMovies(normalizedSearch, normalizedPage);
 
-    router.push({
-      query: {
-        search: normalizedSearch,
-        page: normalizedPage
-      }
-    });
-
     if (!data) {
       setError('problem with loading, try later');
       setMovies([]);

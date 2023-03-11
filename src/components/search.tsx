@@ -60,6 +60,7 @@ export const Search: FC<Props> = memo(
         router.push({
           query: {
             search: value,
+            page: 1,
           }
         });
 
