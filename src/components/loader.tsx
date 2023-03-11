@@ -1,17 +1,23 @@
-import * as React from 'react';
+import { FC, memo } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
-export const Loader = () => {
-  return (
-    <Box sx={{
-      display: 'flex',
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)'
-    }}>
-      <CircularProgress />
-    </Box>
-  );
+interface Props {
+  color?: string,
 }
+
+export const Loader: FC<Props> = memo(
+  ({ color }) => {
+    return (
+      <Box sx={{
+        display: 'flex',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)'
+      }}>
+        <CircularProgress sx={{ color, }} />
+      </Box>
+    );
+  }
+);

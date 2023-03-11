@@ -13,9 +13,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/router'
 import cn from 'classnames';
 import { useMediaQuery } from '@mui/material';
+import { Loader } from './loader';
 
-export const Search: FC = memo(
-  () => {
+
+interface Props {
+  isLoading: boolean,
+}
+
+
+export const Search: FC<Props> = memo(
+  ({ isLoading }) => {
     const router = useRouter();
 
     const isSmallScreen = useMediaQuery('(max-width:600px)');
@@ -142,8 +149,13 @@ export const Search: FC = memo(
                   variant="contained"
                   type="submit"
                   sx={{ margin: '0 20px' }}
+                  disabled={isLoading}
                 >
-                  <SearchIcon />
+                  {
+                    isLoading
+                      ? <Loader color='white' />
+                      : <SearchIcon />
+                  }
                 </Button>
               </>
             )}

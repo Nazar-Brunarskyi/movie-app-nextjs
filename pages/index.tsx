@@ -82,7 +82,7 @@ const Home: FC<Props> = ({
             'container--with-movies': search,
           })}
         >
-          <Search />
+          <Search isLoading={isLoading} />
 
           {normalizedSearch && (
             <MovieList
